@@ -1124,6 +1124,27 @@ Future<void> main() async {
     expect(currentUrl, primaryUrl);
   });
 
+  testWidgets('launches with javaScriptCanOpenWindowsAutomatically on iOS',
+      (WidgetTester tester) async {
+    final WebKitWebViewController controller = WebKitWebViewController(
+      WebKitWebViewControllerCreationParams(),
+    );
+    unawaited(controller.enableJavaScriptCanOpenWindowsAutomatically(true));
+    await controller.loadRequest(LoadRequestParams(uri: Uri.parse(primaryUrl)));
+
+    await tester.pumpWidget(Builder(
+      builder: (BuildContext context) {
+        return PlatformWebViewWidget(
+          PlatformWebViewWidgetCreationParams(controller: controller),
+        ).build(context);
+      },
+    ));
+
+    final String? currentUrl = await controller.currentUrl();
+    expect(currentUrl, primaryUrl);
+  });
+
+
   testWidgets('target _blank opens in same window',
       (WidgetTester tester) async {
     final Completer<void> pageLoaded = Completer<void>();

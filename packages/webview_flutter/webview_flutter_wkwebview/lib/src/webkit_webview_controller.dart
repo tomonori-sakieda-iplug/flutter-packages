@@ -451,6 +451,12 @@ class WebKitWebViewController extends PlatformWebViewController {
     return _webView.setAllowsBackForwardNavigationGestures(enabled);
   }
 
+  /// Whether to support JavaScript can open windows without user interaction.
+  Future<void> enableJavaScriptCanOpenWindowsAutomatically(bool enabled) {
+    return _webView.enableJavaScriptCanOpenWindowsAutomatically(enabled);
+  }
+
+
   @override
   Future<void> setBackgroundColor(Color color) {
     return Future.wait(<Future<void>>[

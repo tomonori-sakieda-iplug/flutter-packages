@@ -1031,6 +1031,17 @@ class WKWebViewHostApiImpl extends WKWebViewHostApi {
     );
   }
 
+  /// Calls [enableJavaScriptCanOpenWindowsAutomaticallyForInstances] with the ids of the provided object instances.
+  Future<void> enableJavaScriptCanOpenWindowsAutomaticallyForInstances(
+      WKWebView instance,
+      bool enabled,
+      ) {
+    return enableJavaScriptCanOpenWindowsAutomatically(
+      instanceManager.getIdentifier(instance)!,
+      enabled,
+    );
+  }
+
   /// Calls [setCustomUserAgent] with the ids of the provided object instances.
   Future<void> setCustomUserAgentForInstances(
     WKWebView instance,

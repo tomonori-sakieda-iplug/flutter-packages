@@ -1087,6 +1087,18 @@ class WKWebView extends UIView {
     );
   }
 
+  /// Indicates whether to support JavaScript can open windows without user interaction.
+  ///
+  /// The default value is false.
+  ///
+  /// Sets [WKPreferences.javaScriptCanOpenWindowsAutomatically](https://developer.apple.com/documentation/webkit/wkpreferences/1536573-javascriptcanopenwindowsautomati).
+  Future<void> enableJavaScriptCanOpenWindowsAutomatically(bool enabled) {
+    return _webViewApi.enableJavaScriptCanOpenWindowsAutomaticallyForInstances(
+      this,
+      enabled,
+    );
+  }
+
   /// The custom user agent string.
   ///
   /// The default value of this property is null.

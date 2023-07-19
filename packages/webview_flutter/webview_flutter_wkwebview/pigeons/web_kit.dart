@@ -688,6 +688,9 @@ abstract class WKWebViewHostApi {
   @ObjCSelector('setAllowsBackForwardForWebViewWithIdentifier:isAllowed:')
   void setAllowsBackForwardNavigationGestures(int identifier, bool allow);
 
+  @ObjCSelector('enableJavaScriptCanOpenWindowsAutomatically:isEnabled:')
+  void enableJavaScriptCanOpenWindowsAutomatically(int identifier, bool enabled);
+
   @ObjCSelector('setUserAgentForWebViewWithIdentifier:userAgent:')
   void setCustomUserAgent(int identifier, String? userAgent);
 
