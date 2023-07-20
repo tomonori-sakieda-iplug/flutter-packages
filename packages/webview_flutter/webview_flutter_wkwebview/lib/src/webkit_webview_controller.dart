@@ -471,6 +471,11 @@ class WebKitWebViewController extends PlatformWebViewController {
     }
   }
 
+  /// Whether JavaScript can open windows without user interaction.
+  Future<void> enableJavaScriptCanOpenWindowsAutomatically(bool enabled) {
+    return _webView.configuration.preferences.enableJavaScriptCanOpenWindowsAutomatically(enabled);
+  }
+
   @override
   Future<void> setUserAgent(String? userAgent) {
     return _webView.setCustomUserAgent(userAgent);

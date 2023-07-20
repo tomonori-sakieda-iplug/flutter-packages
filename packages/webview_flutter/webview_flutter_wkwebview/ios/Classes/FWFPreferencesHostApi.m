@@ -43,4 +43,10 @@
                                                    error:(FlutterError *_Nullable *_Nonnull)error {
   [[self preferencesForIdentifier:identifier] setJavaScriptEnabled:enabled.boolValue];
 }
+
+- (void)enableJavaScriptCanOpenWindowsAutomaticallyForPreferencesWithIdentifier:(nonnull NSNumber *)identifier
+                                               isEnabled:(nonnull NSNumber *)enabled
+                                                   error:(FlutterError *_Nullable *_Nonnull)error {
+  [[self preferencesForIdentifier:identifier] setJavaScriptCanOpenWindowsAutomatically:enabled.boolValue];
+}
 @end

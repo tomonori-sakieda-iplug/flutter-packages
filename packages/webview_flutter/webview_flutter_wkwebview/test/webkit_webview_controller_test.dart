@@ -652,6 +652,19 @@ void main() {
       verify(mockPreferences.setJavaScriptEnabled(false));
     });
 
+    test('enable JavaScriptCanOpenWindowsAutomatically', () async {
+      final MockWKPreferences mockPreferences = MockWKPreferences();
+
+      final WebKitWebViewController controller = createControllerWithMocks(
+        mockPreferences: mockPreferences,
+      );
+
+      await controller.enableJavaScriptCanOpenWindowsAutomatically(true);
+
+      verify(mockPreferences.setJavaScriptEnabled(false));
+    });
+
+
     test('clearCache', () {
       final MockWKWebsiteDataStore mockWebsiteDataStore =
           MockWKWebsiteDataStore();
