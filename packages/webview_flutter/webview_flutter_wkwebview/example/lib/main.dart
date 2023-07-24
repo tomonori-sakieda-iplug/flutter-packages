@@ -456,7 +456,7 @@ class SampleMenu extends StatelessWidget {
   Future<void> _onLoadHtmlStringExample() {
     if(webViewController is WebKitWebViewController) {
       final webKitWebViewController = webViewController as WebKitWebViewController;
-      webKitWebViewController.setJavaScriptPanelCallback((message, defaultText) async {
+      webKitWebViewController.setJavaScriptAlertPanelCallback((message) async {
         print(message);
         return;
       });
