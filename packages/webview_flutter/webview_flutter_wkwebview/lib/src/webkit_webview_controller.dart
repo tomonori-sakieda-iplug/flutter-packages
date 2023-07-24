@@ -12,7 +12,6 @@ import 'package:webview_flutter_platform_interface/webview_flutter_platform_inte
 
 import 'common/instance_manager.dart';
 import 'common/weak_reference_utils.dart';
-import 'common/web_kit.g.dart';
 import 'foundation/foundation.dart';
 import 'web_kit/web_kit.dart';
 import 'webkit_proxy.dart';
@@ -219,14 +218,14 @@ class WebKitWebViewController extends PlatformWebViewController {
       },
       runJavaScriptPanel: (WKWebView webview, WKJavaScriptPanelType type,
           String message, String? defaultText) async {
-        final Future<WKJavaScriptPanelCompletionData> Function(
-                WKJavaScriptPanelType, String, String?)? callback =
+        final Future<dynamic> Function(String, String?)? callback =
             weakThis.target?._javaScriptPanelCallback;
 
         if (callback == null) {
           return WKJavaScriptPanelCompletionData();
         } else {
-          return callback.call(type, message, defaultText);
+          callback.call(message, defaultText);
+          return WKJavaScriptPanelCompletionData();
         }
       },
     );
@@ -283,9 +282,7 @@ class WebKitWebViewController extends PlatformWebViewController {
   WebKitNavigationDelegate? _currentNavigationDelegate;
 
   void Function(PlatformWebViewPermissionRequest)? _onPermissionRequestCallback;
-  Future<WKJavaScriptPanelCompletionData> Function(
-          WKJavaScriptPanelType type, String message, String? defaultText)?
-      _javaScriptPanelCallback;
+  Future<dynamic> Function(String message, String? defaultText)? _javaScriptPanelCallback;
 
   WebKitWebViewControllerCreationParams get _webKitParams =>
       params as WebKitWebViewControllerCreationParams;
@@ -563,8 +560,7 @@ class WebKitWebViewController extends PlatformWebViewController {
     _onPermissionRequestCallback = onPermissionRequest;
   }
 
-  Future<void> setJavaScriptPanelCallback(Future<WKJavaScriptPanelCompletionData> Function(
-      WKJavaScriptPanelType type, String message, String? defaultText) javaScriptPanelCallback) async {
+  Future<void> setJavaScriptPanelCallback(Future<dynamic> Function(String message, String? defaultText) javaScriptPanelCallback) async {
     _javaScriptPanelCallback = javaScriptPanelCallback;
   }
 

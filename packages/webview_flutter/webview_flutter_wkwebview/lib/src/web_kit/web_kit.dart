@@ -6,13 +6,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import '../common/instance_manager.dart';
-import '../common/web_kit.g.dart';
 import '../foundation/foundation.dart';
 import '../ui_kit/ui_kit.dart';
 import 'web_kit_api_impls.dart';
 
 export 'web_kit_api_impls.dart'
-    show WKNavigationType, WKPermissionDecision, WKMediaCaptureType;
+    show WKNavigationType, WKPermissionDecision, WKMediaCaptureType, WKJavaScriptPanelType, WKJavaScriptPanelCompletionData;
 
 /// Times at which to inject script content into a webpage.
 ///

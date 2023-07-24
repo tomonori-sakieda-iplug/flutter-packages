@@ -11,7 +11,7 @@ import '../foundation/foundation.dart';
 import 'web_kit.dart';
 
 export '../common/web_kit.g.dart'
-    show WKNavigationType, WKPermissionDecision, WKMediaCaptureType;
+    show WKNavigationType, WKPermissionDecision, WKMediaCaptureType, WKJavaScriptPanelType, WKJavaScriptPanelCompletionData;
 
 Iterable<WKWebsiteDataTypeEnumData> _toWKWebsiteDataTypeEnumData(
     Iterable<WKWebsiteDataType> types) {
