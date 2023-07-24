@@ -74,6 +74,25 @@ const String kTransparentBackgroundPage = '''
 </html>
 ''';
 
+const String kAlertTestPage = '''
+<html>  
+   <head>     
+      <script type = "text/javascript">  
+            function fun() {      
+               alert ("This is an alert dialog box");  
+            }  
+      </script>       
+   </head>  
+     
+   <body>  
+      <p> Click the following button to see the effect </p>        
+      <form>  
+         <input type = "button" value = "Click me" onclick = "fun();" />  
+      </form>       
+   </body>  
+</html>  
+''';
+
 class WebViewExample extends StatefulWidget {
   const WebViewExample({super.key, this.cookieManager});
 
@@ -433,9 +452,17 @@ class SampleMenu extends StatelessWidget {
   Future<void> _onLoadFlutterAssetExample() {
     return webViewController.loadFlutterAsset('assets/www/index.html');
   }
-
+  
   Future<void> _onLoadHtmlStringExample() {
-    return webViewController.loadHtmlString(kLocalExamplePage);
+    if(webViewController is WebKitWebViewController) {
+      final webKitWebViewController = webViewController as WebKitWebViewController;
+      webKitWebViewController.setJavaScriptPanelCallback((type, message, defaultText) async {
+        print(message);
+        return;
+      });
+    }
+    
+    return webViewController.loadHtmlString(kAlertTestPage);
   }
 
   Future<void> _onTransparentBackground() {
