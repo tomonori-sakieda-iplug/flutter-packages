@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import '../common/instance_manager.dart';
+import '../common/web_kit.g.dart';
 import '../foundation/foundation.dart';
 import '../ui_kit/ui_kit.dart';
 import 'web_kit_api_impls.dart';
@@ -728,6 +729,7 @@ class WKUIDelegate extends NSObject {
   WKUIDelegate({
     this.onCreateWebView,
     this.requestMediaCapturePermission,
+    this.runJavaScriptPanel,
     super.observeValue,
     super.binaryMessenger,
     super.instanceManager,
@@ -749,6 +751,7 @@ class WKUIDelegate extends NSObject {
   WKUIDelegate.detached({
     this.onCreateWebView,
     this.requestMediaCapturePermission,
+    this.runJavaScriptPanel,
     super.observeValue,
     super.binaryMessenger,
     super.instanceManager,
@@ -780,11 +783,15 @@ class WKUIDelegate extends NSObject {
     WKMediaCaptureType type,
   )? requestMediaCapturePermission;
 
+  final Future<WKJavaScriptPanelCompletionData> Function(WKWebView webView, WKJavaScriptPanelType type,
+      String message, String? defaultText)? runJavaScriptPanel;
+
   @override
   WKUIDelegate copy() {
     return WKUIDelegate.detached(
       onCreateWebView: onCreateWebView,
       requestMediaCapturePermission: requestMediaCapturePermission,
+      runJavaScriptPanel: runJavaScriptPanel,
       observeValue: observeValue,
       binaryMessenger: _uiDelegateApi.binaryMessenger,
       instanceManager: _uiDelegateApi.instanceManager,

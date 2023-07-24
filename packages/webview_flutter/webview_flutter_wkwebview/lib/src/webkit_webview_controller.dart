@@ -12,6 +12,7 @@ import 'package:webview_flutter_platform_interface/webview_flutter_platform_inte
 
 import 'common/instance_manager.dart';
 import 'common/weak_reference_utils.dart';
+import 'common/web_kit.g.dart';
 import 'foundation/foundation.dart';
 import 'web_kit/web_kit.dart';
 import 'webkit_proxy.dart';
@@ -216,6 +217,18 @@ class WebKitWebViewController extends PlatformWebViewController {
           return decisionCompleter.future;
         }
       },
+      runJavaScriptPanel: (WKWebView webview, WKJavaScriptPanelType type,
+          String message, String? defaultText) async {
+        final Future<WKJavaScriptPanelCompletionData> Function(
+                WKJavaScriptPanelType, String, String?)? callback =
+            weakThis.target?._javaScriptPanelCallback;
+
+        if (callback == null) {
+          return WKJavaScriptPanelCompletionData();
+        } else {
+          return callback.call(type, message, defaultText);
+        }
+      },
     );
 
     _webView.setUIDelegate(_uiDelegate);
@@ -270,6 +283,9 @@ class WebKitWebViewController extends PlatformWebViewController {
   WebKitNavigationDelegate? _currentNavigationDelegate;
 
   void Function(PlatformWebViewPermissionRequest)? _onPermissionRequestCallback;
+  Future<WKJavaScriptPanelCompletionData> Function(
+          WKJavaScriptPanelType type, String message, String? defaultText)?
+      _javaScriptPanelCallback;
 
   WebKitWebViewControllerCreationParams get _webKitParams =>
       params as WebKitWebViewControllerCreationParams;
@@ -545,6 +561,11 @@ class WebKitWebViewController extends PlatformWebViewController {
     void Function(PlatformWebViewPermissionRequest request) onPermissionRequest,
   ) async {
     _onPermissionRequestCallback = onPermissionRequest;
+  }
+
+  Future<void> setJavaScriptPanelCallback(Future<WKJavaScriptPanelCompletionData> Function(
+      WKJavaScriptPanelType type, String message, String? defaultText) javaScriptPanelCallback) async {
+    _javaScriptPanelCallback = javaScriptPanelCallback;
   }
 
   /// Whether to enable tools for debugging the current WKWebView content.

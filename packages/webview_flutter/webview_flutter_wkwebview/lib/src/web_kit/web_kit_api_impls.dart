@@ -767,6 +767,32 @@ class WKUIDelegateFlutterApiImpl extends WKUIDelegateFlutterApi {
 
     return WKPermissionDecisionData(value: decision);
   }
+
+  @override
+  Future<WKJavaScriptPanelCompletionData> runJavaScriptPanel(
+      int identifier,
+      int webViewIdentifier,
+      WKJavaScriptPanel type,
+      String message,
+      String? defaultText) async {
+    final Future<WKJavaScriptPanelCompletionData> Function(WKWebView webView,
+            WKJavaScriptPanelType type, String message, String? defaultText)?
+        function = _getDelegate(identifier)!.runJavaScriptPanel;
+    return function!.call(
+        instanceManager.getInstanceWithWeakReference(webViewIdentifier)!,
+        type.type,
+        message,
+        defaultText);
+  }
+
+  // @override
+  // Future<void> runJavaScriptPanel(int identifier, int webViewIdentifier, String message) async {
+  //   final WKUIDelegate instance =
+  //   instanceManager.getInstanceWithWeakReference(identifier)!;
+  //   final void Function(String)? function = _getDelegate(identifier)?.runJavaScriptPanel;
+  //   function?.call(message);
+  //   return;
+  // }
 }
 
 /// Host api implementation for [WKNavigationDelegate].

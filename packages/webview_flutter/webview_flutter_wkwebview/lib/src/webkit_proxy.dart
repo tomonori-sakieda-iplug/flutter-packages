@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'common/instance_manager.dart';
+import 'common/web_kit.g.dart';
 import 'foundation/foundation.dart';
 import 'web_kit/web_kit.dart';
 
@@ -87,6 +88,12 @@ class WebKitProxy {
       WKFrameInfo frame,
       WKMediaCaptureType type,
     )? requestMediaCapturePermission,
+    Future<WKJavaScriptPanelCompletionData> Function(
+        WKWebView webView,
+        WKJavaScriptPanelType type,
+      String message,
+        String? defaultText,
+    )? runJavaScriptPanel,
     InstanceManager? instanceManager,
   }) createUIDelegate;
 }
