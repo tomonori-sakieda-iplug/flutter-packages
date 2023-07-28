@@ -1033,6 +1033,7 @@ class WebChromeClient extends JavaObject {
     this.onPermissionRequest,
     this.onGeolocationPermissionsShowPrompt,
     this.onGeolocationPermissionsHidePrompt,
+    this.runJavaScriptPanel,
     @visibleForTesting super.binaryMessenger,
     @visibleForTesting super.instanceManager,
   }) : super.detached() {
@@ -1052,6 +1053,7 @@ class WebChromeClient extends JavaObject {
     this.onPermissionRequest,
     this.onGeolocationPermissionsShowPrompt,
     this.onGeolocationPermissionsHidePrompt,
+    this.runJavaScriptPanel,
     super.binaryMessenger,
     super.instanceManager,
   }) : super.detached();
@@ -1095,6 +1097,13 @@ class WebChromeClient extends JavaObject {
   final void Function(
     WebChromeClient instance,
   )? onGeolocationPermissionsHidePrompt;
+
+  final Future<void> Function(
+      WebChromeClient instance,
+      int type,
+      String message,
+      String? defaultText
+      )? runJavaScriptPanel;
 
   /// Sets the required synchronous return value for the Java method,
   /// `WebChromeClient.onShowFileChooser(...)`.

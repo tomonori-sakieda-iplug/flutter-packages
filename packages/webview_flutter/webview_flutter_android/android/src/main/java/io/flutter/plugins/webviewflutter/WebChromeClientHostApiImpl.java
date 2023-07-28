@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Message;
 import android.webkit.GeolocationPermissions;
+import android.webkit.JsPromptResult;
+import android.webkit.JsResult;
 import android.webkit.PermissionRequest;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -98,6 +100,33 @@ public class WebChromeClientHostApiImpl implements WebChromeClientHostApi {
     /** Sets return value for {@link #onShowFileChooser}. */
     public void setReturnValueForOnShowFileChooser(boolean value) {
       returnValueForOnShowFileChooser = value;
+    }
+
+    @Override
+    public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+      flutterApi.runJavaScriptPanel(this, view, GeneratedAndroidWebView.JavaScriptPanelType.ALERT, message, null, reply -> {
+
+      });
+
+      return true;
+    }
+
+    @Override
+    public boolean onJsConfirm(WebView view, String url, String message, JsResult result) {
+      flutterApi.runJavaScriptPanel(this, view, GeneratedAndroidWebView.JavaScriptPanelType.ALERT, message, null, reply -> {
+
+      });
+
+      return true;
+    }
+
+    @Override
+    public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, JsPromptResult result) {
+      flutterApi.runJavaScriptPanel(this, view, GeneratedAndroidWebView.JavaScriptPanelType.ALERT, message, defaultValue, reply -> {
+
+      });
+
+      return true;
     }
   }
 

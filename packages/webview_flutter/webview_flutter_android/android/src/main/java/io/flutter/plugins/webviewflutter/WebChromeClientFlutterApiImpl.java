@@ -10,6 +10,7 @@ import android.webkit.PermissionRequest;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugins.webviewflutter.GeneratedAndroidWebView.WebChromeClientFlutterApi;
@@ -115,6 +116,28 @@ public class WebChromeClientFlutterApiImpl extends WebChromeClientFlutterApi {
         Objects.requireNonNull(instanceManager.getIdentifierForStrongReference(instance)),
         Objects.requireNonNull(instanceManager.getIdentifierForStrongReference(request)),
         callback);
+  }
+
+  public void runJavaScriptPanel(
+          @NonNull WebChromeClient webChromeClient,
+          @NonNull WebView webView,
+          @NonNull GeneratedAndroidWebView.JavaScriptPanelType type,
+          @NonNull String message,
+          @Nullable String defaultText,
+          @NonNull Reply<GeneratedAndroidWebView.JavaScriptPanelCompletionData> callback
+          ) {
+
+    final GeneratedAndroidWebView.JavaScriptPanel panelType = new GeneratedAndroidWebView.JavaScriptPanel();
+    panelType.setType(type);
+
+    super.runJavaScriptPanel(
+            Objects.requireNonNull(instanceManager.getIdentifierForStrongReference(webChromeClient)),
+            Objects.requireNonNull(instanceManager.getIdentifierForStrongReference(webView)),
+            panelType,
+            message,
+            defaultText,
+            callback
+    );
   }
 
   private long getIdentifierForClient(WebChromeClient webChromeClient) {
