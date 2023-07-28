@@ -43,32 +43,36 @@ class AndroidWebViewProxy {
               android_webview.GeolocationPermissionsCallback callback)?
           onGeolocationPermissionsShowPrompt,
       void Function(android_webview.WebChromeClient instance)?
-          onGeolocationPermissionsHidePrompt}) createAndroidWebChromeClient;
+          onGeolocationPermissionsHidePrompt,
+      Future<void> Function(android_webview.WebChromeClient instance, int type,
+              String message, String? defaultText)?
+          runJavaScriptPanel}) createAndroidWebChromeClient;
 
   /// Constructs a [android_webview.WebViewClient].
-  final android_webview.WebViewClient Function({
-    void Function(android_webview.WebView webView, String url)? onPageStarted,
-    void Function(android_webview.WebView webView, String url)? onPageFinished,
-    void Function(
-      android_webview.WebView webView,
-      android_webview.WebResourceRequest request,
-      android_webview.WebResourceError error,
-    )? onReceivedRequestError,
-    @Deprecated('Only called on Android version < 23.')
-    void Function(
-      android_webview.WebView webView,
-      int errorCode,
-      String description,
-      String failingUrl,
-    )? onReceivedError,
-    void Function(
-      android_webview.WebView webView,
-      android_webview.WebResourceRequest request,
-    )? requestLoading,
-    void Function(android_webview.WebView webView, String url)? urlLoading,
-    void Function(android_webview.WebView webView, String url, bool isReload)?
-        doUpdateVisitedHistory,
-  }) createAndroidWebViewClient;
+  final android_webview.WebViewClient Function(
+      {void Function(android_webview.WebView webView, String url)?
+          onPageStarted,
+      void Function(android_webview.WebView webView, String url)?
+          onPageFinished,
+      void Function(
+        android_webview.WebView webView,
+        android_webview.WebResourceRequest request,
+        android_webview.WebResourceError error,
+      )? onReceivedRequestError,
+      @Deprecated('Only called on Android version < 23.')
+      void Function(
+        android_webview.WebView webView,
+        int errorCode,
+        String description,
+        String failingUrl,
+      )? onReceivedError,
+      void Function(
+        android_webview.WebView webView,
+        android_webview.WebResourceRequest request,
+      )? requestLoading,
+      void Function(android_webview.WebView webView, String url)? urlLoading,
+      void Function(android_webview.WebView webView, String url, bool isReload)?
+          doUpdateVisitedHistory}) createAndroidWebViewClient;
 
   /// Constructs a [android_webview.FlutterAssetManager].
   final android_webview.FlutterAssetManager Function()

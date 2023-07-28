@@ -88,6 +88,28 @@ class WebResourceErrorData {
   String description;
 }
 
+/// List of the type of System Popup called from JavaScript
+enum JavaScriptPanelType {
+  /// See https://developer.apple.com/documentation/webkit/wkuidelegate/1537406-webview
+  alert,
+  /// See https://developer.apple.com/documentation/webkit/wkuidelegate/1536489-webview
+  confirm,
+  /// See https://developer.apple.com/documentation/webkit/wkuidelegate/1538086-webview
+  textInput,
+}
+
+class JavaScriptPanel {
+  late JavaScriptPanelType type;
+}
+
+/// A data class to return the results of system popups called from Javascript.
+/// See with JavaScriptPanelType
+class JavaScriptPanelCompletionData {
+  late bool? isConfirmed;
+  late String? inputMessage;
+}
+
+
 class WebViewPoint {
   WebViewPoint(this.x, this.y);
 
@@ -375,6 +397,9 @@ abstract class WebChromeClientFlutterApi {
 
   /// Callback to Dart function `WebChromeClient.onGeolocationPermissionsHidePrompt`.
   void onGeolocationPermissionsHidePrompt(int identifier);
+
+  @async
+  JavaScriptPanelCompletionData? runJavaScriptPanel(int instanceId, int webViewInstanceId, JavaScriptPanel type, String message, String? defaultText);
 }
 
 @HostApi(dartHostTestHandler: 'TestWebStorageHostApi')

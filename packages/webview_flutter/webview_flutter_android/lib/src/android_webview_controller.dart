@@ -194,6 +194,13 @@ class AndroidWebViewController extends PlatformWebViewController {
         };
       },
     ),
+    runJavaScriptPanel: withWeakReferenceTo(this,
+        (WeakReference<AndroidWebViewController> weakReference) {
+      return (android_webview.WebChromeClient instance, type, message,
+          defaultText) async {
+        return;
+      };
+    }),
   );
 
   /// The native [android_webview.FlutterAssetManager] allows managing assets.

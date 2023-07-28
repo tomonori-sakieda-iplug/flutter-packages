@@ -976,6 +976,20 @@ class WebChromeClientFlutterApiImpl extends WebChromeClientFlutterApi {
       request.deny();
     }
   }
+
+  @override
+  Future<JavaScriptPanelCompletionData?> runJavaScriptPanel(
+      int instanceId,
+      int webViewInstanceId,
+      JavaScriptPanel type,
+      String message,
+      String? defaultText) {
+
+    final WebChromeClient instance =
+    instanceManager.getInstanceWithWeakReference(instanceId)!;
+
+    throw UnimplementedError();
+  }
 }
 
 /// Host api implementation for [WebStorage].
