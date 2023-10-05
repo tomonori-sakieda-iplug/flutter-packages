@@ -118,6 +118,13 @@ class WebResourceErrorData {
   String description;
 }
 
+class JavaScriptDialogData {
+  late String message;
+  late String url;
+  late String? defaultText;
+}
+
+
 class WebViewPoint {
   WebViewPoint(this.x, this.y);
 
@@ -390,6 +397,21 @@ abstract class WebChromeClientHostApi {
     int instanceId,
     bool value,
   );
+
+  void setSynchronousReturnValueForOnJsAlert(
+      int instanceId,
+      bool value,
+      );
+
+  void setSynchronousReturnValueForOnJsConfirm(
+      int instanceId,
+      bool value,
+      );
+
+  void setSynchronousReturnValueForOnJsPrompt(
+      int instanceId,
+      bool value,
+      );
 }
 
 @HostApi(dartHostTestHandler: 'TestAssetManagerHostApi')
@@ -435,6 +457,15 @@ abstract class WebChromeClientFlutterApi {
 
   /// Callback to Dart function `WebChromeClient.onConsoleMessage`.
   void onConsoleMessage(int instanceId, ConsoleMessage message);
+
+  @async
+  void onJsAlert(int instanceId, JavaScriptDialogData data);
+
+  @async
+  bool onJsConfirm(int instanceId, JavaScriptDialogData data);
+
+  @async
+  String onJsPrompt(int instanceId, JavaScriptDialogData data);
 }
 
 @HostApi(dartHostTestHandler: 'TestWebStorageHostApi')

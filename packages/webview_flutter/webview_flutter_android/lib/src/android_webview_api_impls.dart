@@ -12,7 +12,7 @@ import 'android_webview.g.dart';
 import 'instance_manager.dart';
 
 export 'android_webview.g.dart'
-    show ConsoleMessage, ConsoleMessageLevel, FileChooserMode;
+    show ConsoleMessage, ConsoleMessageLevel, FileChooserMode, JavaScriptDialogData;
 
 /// Converts [WebResourceRequestData] to [WebResourceRequest]
 WebResourceRequest _toWebResourceRequest(WebResourceRequestData data) {
@@ -909,6 +909,30 @@ class WebChromeClientHostApiImpl extends WebChromeClientHostApi {
       value,
     );
   }
+
+  Future<void> setSynchronousReturnValueForOnJsAlertFromInstance(
+    WebChromeClient instance,
+    bool value,
+  ) {
+    return setSynchronousReturnValueForOnJsAlert(
+        instanceManager.getIdentifier(instance)!, value);
+  }
+
+  Future<void> setSynchronousReturnValueForOnJsConfirmFromInstance(
+      WebChromeClient instance,
+      bool value,
+      ) {
+    return setSynchronousReturnValueForOnJsConfirm(
+        instanceManager.getIdentifier(instance)!, value);
+  }
+
+  Future<void> setSynchronousReturnValueForOnJsPromptFromInstance(
+      WebChromeClient instance,
+      bool value,
+      ) {
+    return setSynchronousReturnValueForOnJsPrompt(
+        instanceManager.getIdentifier(instance)!, value);
+  }
 }
 
 /// Flutter api implementation for [DownloadListener].
@@ -1040,6 +1064,30 @@ class WebChromeClientFlutterApiImpl extends WebChromeClientFlutterApi {
     final WebChromeClient instance =
         instanceManager.getInstanceWithWeakReference(instanceId)!;
     instance.onConsoleMessage?.call(instance, message);
+  }
+
+  @override
+  Future<void> onJsAlert(int instanceId, JavaScriptDialogData data) {
+    final WebChromeClient instance =
+    instanceManager.getInstanceWithWeakReference(instanceId)!;
+
+    return instance.onJsAlert!(data);
+  }
+
+  @override
+  Future<bool> onJsConfirm(int instanceId, JavaScriptDialogData data) {
+    final WebChromeClient instance =
+    instanceManager.getInstanceWithWeakReference(instanceId)!;
+
+    return instance.onJsConfirm!(data);
+  }
+
+  @override
+  Future<String> onJsPrompt(int instanceId, JavaScriptDialogData data) {
+    final WebChromeClient instance =
+    instanceManager.getInstanceWithWeakReference(instanceId)!;
+
+    return instance.onJsPrompt!(data);
   }
 }
 

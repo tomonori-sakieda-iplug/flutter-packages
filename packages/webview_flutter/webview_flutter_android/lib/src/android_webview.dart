@@ -13,7 +13,7 @@ import 'android_webview_api_impls.dart';
 import 'instance_manager.dart';
 
 export 'android_webview_api_impls.dart'
-    show ConsoleMessage, ConsoleMessageLevel, FileChooserMode;
+    show ConsoleMessage, ConsoleMessageLevel, FileChooserMode, JavaScriptDialogData;
 
 /// Root of the Java class hierarchy.
 ///
@@ -1054,6 +1054,9 @@ class WebChromeClient extends JavaObject {
     this.onShowCustomView,
     this.onHideCustomView,
     this.onConsoleMessage,
+    this.onJsAlert,
+    this.onJsConfirm,
+    this.onJsPrompt,
     @visibleForTesting super.binaryMessenger,
     @visibleForTesting super.instanceManager,
   }) : super.detached() {
@@ -1076,6 +1079,9 @@ class WebChromeClient extends JavaObject {
     this.onShowCustomView,
     this.onHideCustomView,
     this.onConsoleMessage,
+    this.onJsAlert,
+    this.onJsConfirm,
+    this.onJsPrompt,
     super.binaryMessenger,
     super.instanceManager,
   }) : super.detached();
@@ -1133,6 +1139,11 @@ class WebChromeClient extends JavaObject {
   final void Function(WebChromeClient instance, ConsoleMessage message)?
       onConsoleMessage;
 
+  final Future<void> Function(JavaScriptDialogData data)? onJsAlert;
+  final Future<bool> Function(JavaScriptDialogData data)? onJsConfirm;
+  final Future<String> Function(JavaScriptDialogData data)?
+      onJsPrompt;
+
   /// Sets the required synchronous return value for the Java method,
   /// `WebChromeClient.onShowFileChooser(...)`.
   ///
@@ -1189,6 +1200,39 @@ class WebChromeClient extends JavaObject {
     );
   }
 
+  Future<void> setSynchronousReturnValueForOnJsAlert(
+    bool value,
+  ) {
+    if (value && onJsAlert == null) {
+      throw StateError(
+        'Setting this to true requires `onJsAlert` to be nonnull.',
+      );
+    }
+    return api.setSynchronousReturnValueForOnJsAlertFromInstance(this, value);
+  }
+
+  Future<void> setSynchronousReturnValueForOnJsConfirm(
+    bool value,
+  ) {
+    if (value && onJsConfirm == null) {
+      throw StateError(
+        'Setting this to true requires `onJsConfirm` to be nonnull.',
+      );
+    }
+    return api.setSynchronousReturnValueForOnJsConfirmFromInstance(this, value);
+  }
+
+  Future<void> setSynchronousReturnValueForOnJsPrompt(
+    bool value,
+  ) {
+    if (value && onJsPrompt == null) {
+      throw StateError(
+        'Setting this to true requires `onJsPrompt` to be nonnull.',
+      );
+    }
+    return api.setSynchronousReturnValueForOnJsPromptFromInstance(this, value);
+  }
+
   @override
   WebChromeClient copy() {
     return WebChromeClient.detached(
@@ -1200,6 +1244,9 @@ class WebChromeClient extends JavaObject {
       onShowCustomView: onShowCustomView,
       onHideCustomView: onHideCustomView,
       onConsoleMessage: onConsoleMessage,
+      onJsAlert: onJsAlert,
+      onJsConfirm: onJsConfirm,
+      onJsPrompt: onJsPrompt,
       binaryMessenger: _api.binaryMessenger,
       instanceManager: _api.instanceManager,
     );

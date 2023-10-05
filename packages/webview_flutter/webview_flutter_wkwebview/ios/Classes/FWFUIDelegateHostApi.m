@@ -90,6 +90,29 @@
                                                             decision));
                                                   }];
 }
+
+
+- (void)runJavaScriptAlertPanelForDelegateWithIdentifier:(FWFUIDelegate *)instance data:(FWFWKJavaScriptPanelData *)data completionHandler:(void (^)(void))completionHandler {
+    [self runJavaScriptAlertPanelForDelegateWithIdentifier:@([self identifierForDelegate:instance]) data:data completion:^(FlutterError * error) {
+        NSAssert(!error, @"%@", error);
+        completionHandler();
+    }];
+}
+
+- (void)runJavaScriptConfirmPanelForDelegateWithIdentifier:(FWFUIDelegate *)instance data:(FWFWKJavaScriptPanelData *)data completionHandler:(void (^)(BOOL))completionHandler {
+    [self runJavaScriptConfirmPanelForDelegateWithIdentifier:@([self identifierForDelegate:instance]) data:data completion:^(NSNumber * isConfirmed, FlutterError * error) {
+        NSAssert(!error, @"%@", error);
+        completionHandler(isConfirmed.boolValue);
+    }];
+}
+
+- (void)runJavaScriptTextInputPanelForDelegateWithIdentifier:(FWFUIDelegate *)instance data:(FWFWKJavaScriptPanelData *)data completionHandler:(void (^)(NSString * _Nullable))completionHandler {
+    [self runJavaScriptTextInputPanelForDelegateWithIdentifier:@([self identifierForDelegate:instance]) data:data completion:^(NSString * inputText, FlutterError * error) {
+        NSAssert(!error, @"%@", error);
+        completionHandler(inputText);
+    }];
+}
+
 @end
 
 @implementation FWFUIDelegate
@@ -133,6 +156,37 @@
                                                     decisionHandler(decision);
                                                   }];
 }
+
+- (void)webView:(WKWebView *)webView runJavaScriptAlertPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(void))completionHandler {
+    FWFWKJavaScriptPanelData* data = [FWFWKJavaScriptPanelData makeWithMessage:message url:frame.request.URL.absoluteString defaultText:nil];
+    
+    [self.UIDelegateAPI runJavaScriptAlertPanelForDelegateWithIdentifier:self
+                                                                 data:data
+                                                       completionHandler:^{
+        completionHandler();
+    }];
+}
+
+- (void)webView:(WKWebView *)webView runJavaScriptConfirmPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(BOOL))completionHandler {
+    FWFWKJavaScriptPanelData* data = [FWFWKJavaScriptPanelData makeWithMessage:message url:frame.request.URL.absoluteString defaultText:nil];
+    
+    [self.UIDelegateAPI runJavaScriptConfirmPanelForDelegateWithIdentifier:self
+                                                                   data:data
+                                                         completionHandler:^(BOOL isConfirmed) {
+        completionHandler(isConfirmed);
+    }];
+}
+
+- (void)webView:(WKWebView *)webView runJavaScriptTextInputPanelWithPrompt:(NSString *)prompt defaultText:(NSString *)defaultText initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(NSString * _Nullable))completionHandler {
+    FWFWKJavaScriptPanelData* data = [FWFWKJavaScriptPanelData makeWithMessage:prompt url:frame.request.URL.absoluteString defaultText:defaultText];
+    
+    [self.UIDelegateAPI runJavaScriptTextInputPanelForDelegateWithIdentifier:self
+                                                                        data: data
+                                                           completionHandler:^(NSString * _Nullable inputMessage) {
+        completionHandler(inputMessage);
+    }];
+}
+
 @end
 
 @interface FWFUIDelegateHostApiImpl ()
@@ -164,4 +218,5 @@
                                                              instanceManager:self.instanceManager];
   [self.instanceManager addDartCreatedInstance:uIDelegate withIdentifier:identifier.longValue];
 }
+
 @end

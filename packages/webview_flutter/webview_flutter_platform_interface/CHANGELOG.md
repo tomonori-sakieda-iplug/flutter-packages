@@ -1,3 +1,8 @@
+## 2.7.0
+
+* Adds support to show JavaScript dialog. See `PlatformWebViewController.setOnJavaScriptAlertDialog`, `PlatformWebViewController.setOnJavaScriptConfirmDialog` and `PlatformWebViewController.setOnJavaScriptTextInputDialog`.
+
+
 ## 2.6.0
 
 * Adds support to register a callback to intercept messages that are written to

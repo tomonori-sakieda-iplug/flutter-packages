@@ -107,6 +107,38 @@ const String kLogExamplePage = '''
 </html>
 ''';
 
+const String kAlertTestPage = '''
+<!DOCTYPE html>
+<html>  
+   <head>     
+      <script type = "text/javascript">  
+            function showAlert(text) {	          
+	            alert(text);      
+            }  
+            
+            function showConfirm(text) {
+              var result = confirm(text);
+              alert(result);
+            }
+            
+            function showPrompt(text, defaultText) {
+              var inputString = prompt('Enter input', 'Default text');
+	            alert(inputString);            
+            }            
+      </script>       
+   </head>  
+     
+   <body>  
+      <p> Click the following button to see the effect </p>        
+      <form>  
+        <input type = "button" value = "Alert" onclick = "showAlert('Test Alert');" />
+        <input type = "button" value = "Confirm" onclick = "showConfirm('Test Confirm');" />  
+        <input type = "button" value = "Prompt" onclick = "showPrompt('Test Prompt', 'Default Value');" />    
+      </form>       
+   </body>  
+</html>  
+''';
+
 class WebViewExample extends StatefulWidget {
   const WebViewExample({super.key, this.cookieManager});
 
@@ -237,6 +269,7 @@ enum MenuOptions {
   setCookie,
   videoExample,
   logExample,
+  javaScriptAlert,
 }
 
 class SampleMenu extends StatelessWidget {
@@ -303,6 +336,9 @@ class SampleMenu extends StatelessWidget {
           case MenuOptions.logExample:
             _onLogExample();
             break;
+          case MenuOptions.javaScriptAlert:
+            _onJavaScriptAlertExample(context);
+            break;
         }
       },
       itemBuilder: (BuildContext context) => <PopupMenuItem<MenuOptions>>[
@@ -366,6 +402,10 @@ class SampleMenu extends StatelessWidget {
         const PopupMenuItem<MenuOptions>(
           value: MenuOptions.videoExample,
           child: Text('Video example'),
+        ),
+        const PopupMenuItem<MenuOptions>(
+          value: MenuOptions.javaScriptAlert,
+          child: Text('JavaScript Alert Example'),
         ),
       ],
     );
@@ -515,6 +555,28 @@ class SampleMenu extends StatelessWidget {
     return webViewController.loadHtmlString(kTransparentBackgroundPage);
   }
 
+  Future<void> _onJavaScriptAlertExample(BuildContext context) {
+    webViewController.setOnJavaScriptAlertDialog(
+        (JavaScriptAlertDialogRequest request) async {
+      await _showAlert(context, request.message);
+    });
+
+    webViewController.setOnJavaScriptConfirmDialog(
+        (JavaScriptConfirmDialogRequest request) async {
+      final bool result = await _showConfirm(context, request.message);
+      return result;
+    });
+
+    webViewController.setOnJavaScriptTextInputDialog(
+        (JavaScriptTextInputDialogRequest request) async {
+      final String result =
+          await _showTextInput(context, request.message, request.defaultText);
+      return result;
+    });
+
+    return webViewController.loadHtmlString(kAlertTestPage);
+  }
+
   Widget _getCookieList(String cookies) {
     if (cookies == '""') {
       return Container();
@@ -548,6 +610,67 @@ class SampleMenu extends StatelessWidget {
     });
 
     return webViewController.loadHtmlString(kLogExamplePage);
+  }
+
+  Future<void> _showAlert(BuildContext context, String message) async {
+    return showDialog(
+        context: context,
+        builder: (BuildContext ctx) {
+          return AlertDialog(
+            content: Text(message),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(ctx).pop();
+                  },
+                  child: const Text('OK'))
+            ],
+          );
+        });
+  }
+
+  Future<bool> _showConfirm(BuildContext context, String message) async {
+    final dynamic result = await showDialog(
+        context: context,
+        builder: (BuildContext ctx) {
+          return AlertDialog(
+            content: Text(message),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(ctx).pop(false);
+                  },
+                  child: const Text('Cancel')),
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(ctx).pop(true);
+                  },
+                  child: const Text('OK')),
+            ],
+          );
+        });
+
+    return result.runtimeType == bool && result as bool;
+  }
+
+  Future<String> _showTextInput(
+      BuildContext context, String message, String? defaultText) async {
+    final dynamic result = await showDialog(
+        context: context,
+        builder: (BuildContext ctx) {
+          return AlertDialog(
+            content: Text(message),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(ctx).pop('Text test');
+                  },
+                  child: const Text('Enter')),
+            ],
+          );
+        });
+
+    return result.runtimeType == String ? result as String : '';
   }
 }
 

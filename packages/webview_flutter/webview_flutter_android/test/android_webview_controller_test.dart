@@ -76,6 +76,9 @@ void main() {
       void Function(android_webview.WebChromeClient instance,
               android_webview.ConsoleMessage message)?
           onConsoleMessage,
+      Future<void> Function(android_webview.JavaScriptDialogData data)? onJsAlert,
+      Future<bool> Function(android_webview.JavaScriptDialogData data)? onJsConfirm,
+      Future<String> Function(android_webview.JavaScriptDialogData data)? onJsPrompt,
     })? createWebChromeClient,
     android_webview.WebView? mockWebView,
     android_webview.WebViewClient? mockWebViewClient,
@@ -117,6 +120,9 @@ void main() {
                     void Function(android_webview.WebChromeClient instance,
                             android_webview.ConsoleMessage message)?
                         onConsoleMessage,
+                    Future<void> Function(android_webview.JavaScriptDialogData data)? onJsAlert,
+                    Future<bool> Function(android_webview.JavaScriptDialogData data)? onJsConfirm,
+                    Future<String> Function(android_webview.JavaScriptDialogData data)? onJsPrompt,
                   }) =>
                       MockWebChromeClient(),
               createAndroidWebView: () => nonNullMockWebView,
@@ -613,6 +619,9 @@ void main() {
           dynamic onShowCustomView,
           dynamic onHideCustomView,
           dynamic onConsoleMessage,
+          dynamic onJsAlert,
+          dynamic onJsConfirm,
+          dynamic onJsPrompt,
         }) {
           onShowFileChooserCallback = onShowFileChooser!;
           return mockWebChromeClient;
@@ -684,6 +693,9 @@ void main() {
           dynamic onShowCustomView,
           dynamic onHideCustomView,
           dynamic onConsoleMessage,
+          dynamic onJsAlert,
+          dynamic onJsConfirm,
+          dynamic onJsPrompt,
         }) {
           onGeoPermissionHandle = onGeolocationPermissionsShowPrompt!;
           onGeoPermissionHidePromptHandle = onGeolocationPermissionsHidePrompt!;
@@ -751,6 +763,9 @@ void main() {
           dynamic onGeolocationPermissionsShowPrompt,
           dynamic onGeolocationPermissionsHidePrompt,
           dynamic onPermissionRequest,
+          dynamic onJsAlert,
+          dynamic onJsConfirm,
+          dynamic onJsPrompt,
           void Function(
                   android_webview.WebChromeClient instance,
                   android_webview.View view,
@@ -812,6 +827,9 @@ void main() {
           dynamic onShowCustomView,
           dynamic onHideCustomView,
           dynamic onConsoleMessage,
+          dynamic onJsAlert,
+          dynamic onJsConfirm,
+          dynamic onJsPrompt,
         }) {
           onPermissionRequestCallback = onPermissionRequest!;
           return mockWebChromeClient;
@@ -867,6 +885,9 @@ void main() {
           dynamic onShowCustomView,
           dynamic onHideCustomView,
           dynamic onConsoleMessage,
+          dynamic onJsAlert,
+          dynamic onJsConfirm,
+          dynamic onJsPrompt,
         }) {
           onPermissionRequestCallback = onPermissionRequest!;
           return mockWebChromeClient;
@@ -908,6 +929,9 @@ void main() {
           dynamic onPermissionRequest,
           dynamic onShowCustomView,
           dynamic onHideCustomView,
+          dynamic onJsAlert,
+          dynamic onJsConfirm,
+          dynamic onJsPrompt,
           void Function(
             android_webview.WebChromeClient,
             android_webview.ConsoleMessage,
@@ -1458,6 +1482,9 @@ void main() {
               onShowCustomView,
           dynamic onHideCustomView,
           dynamic onConsoleMessage,
+          dynamic onJsAlert,
+          dynamic onJsConfirm,
+          dynamic onJsPrompt,
         }) {
           onShowCustomViewCallback = onShowCustomView;
           return mockWebChromeClient;

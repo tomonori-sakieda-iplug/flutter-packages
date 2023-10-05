@@ -1,3 +1,6 @@
+## 3.10.0
+* Adds support to show JavaScript dialog. See `PlatformWebViewController.setOnJavaScriptAlertDialog`, `PlatformWebViewController.setOnJavaScriptConfirmDialog` and `PlatformWebViewController.setOnJavaScriptTextInputDialog`.
+
 ## 3.9.1
 
 * Fixes bug where `WebkitWebViewController.getUserAgent` was incorrectly returning an empty String.
@@ -9,6 +12,7 @@
 ## 3.8.0
 
 * Adds support to register a callback to receive JavaScript console messages. See `WebKitWebViewController.setOnConsoleMessage`.
+
 
 ## 3.7.4
 

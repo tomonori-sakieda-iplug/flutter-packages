@@ -11,7 +11,11 @@ import '../foundation/foundation.dart';
 import 'web_kit.dart';
 
 export '../common/web_kit.g.dart'
-    show WKNavigationType, WKPermissionDecision, WKMediaCaptureType;
+    show
+        WKNavigationType,
+        WKPermissionDecision,
+        WKMediaCaptureType,
+        WKJavaScriptPanelData;
 
 Iterable<WKWebsiteDataTypeEnumData> _toWKWebsiteDataTypeEnumData(
     Iterable<WKWebsiteDataType> types) {
@@ -766,6 +770,30 @@ class WKUIDelegateFlutterApiImpl extends WKUIDelegateFlutterApi {
     }
 
     return WKPermissionDecisionData(value: decision);
+  }
+
+  @override
+  Future<void> runJavaScriptAlertPanel(
+      int identifier, WKJavaScriptPanelData data) {
+    final WKUIDelegate instance =
+        instanceManager.getInstanceWithWeakReference(identifier)!;
+    return instance.runJavaScriptAlertDialog!.call(data);
+  }
+
+  @override
+  Future<bool> runJavaScriptConfirmPanel(
+      int identifier, WKJavaScriptPanelData data) {
+    final WKUIDelegate instance =
+        instanceManager.getInstanceWithWeakReference(identifier)!;
+    return instance.runJavaScriptConfirmDialog!.call(data);
+  }
+
+  @override
+  Future<String> runJavaScriptTextInputPanel(
+      int identifier, WKJavaScriptPanelData data) {
+    final WKUIDelegate instance =
+        instanceManager.getInstanceWithWeakReference(identifier)!;
+    return instance.runJavaScriptTextInputDialog!.call(data);
   }
 }
 

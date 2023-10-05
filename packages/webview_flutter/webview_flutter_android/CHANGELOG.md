@@ -1,3 +1,7 @@
+## 3.13.0
+
+* Add support to show JavaScript dialog. See `PlatformWebViewController.setJavaScriptAlertDialogCallback`, `PlatformWebViewController.setJavaScriptConfirmDialogCallback` and `PlatformWebViewController.setJavaScriptTextInputDialogCallback`.
+
 ## 3.12.0
 
 * Adds support for `PlatformWebViewController.getUserAgent`.

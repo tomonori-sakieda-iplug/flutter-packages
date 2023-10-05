@@ -11,7 +11,11 @@ import '../ui_kit/ui_kit.dart';
 import 'web_kit_api_impls.dart';
 
 export 'web_kit_api_impls.dart'
-    show WKNavigationType, WKPermissionDecision, WKMediaCaptureType;
+    show
+        WKNavigationType,
+        WKPermissionDecision,
+        WKMediaCaptureType,
+        WKJavaScriptPanelData;
 
 /// Times at which to inject script content into a webpage.
 ///
@@ -728,6 +732,9 @@ class WKUIDelegate extends NSObject {
   WKUIDelegate({
     this.onCreateWebView,
     this.requestMediaCapturePermission,
+    this.runJavaScriptAlertDialog,
+    this.runJavaScriptConfirmDialog,
+    this.runJavaScriptTextInputDialog,
     super.observeValue,
     super.binaryMessenger,
     super.instanceManager,
@@ -749,6 +756,9 @@ class WKUIDelegate extends NSObject {
   WKUIDelegate.detached({
     this.onCreateWebView,
     this.requestMediaCapturePermission,
+    this.runJavaScriptAlertDialog,
+    this.runJavaScriptConfirmDialog,
+    this.runJavaScriptTextInputDialog,
     super.observeValue,
     super.binaryMessenger,
     super.instanceManager,
@@ -780,11 +790,29 @@ class WKUIDelegate extends NSObject {
     WKMediaCaptureType type,
   )? requestMediaCapturePermission;
 
+  /// notifies the host application that the web page
+  /// wants to display a JavaScript alert() dialog.
+  final Future<void> Function(WKJavaScriptPanelData data)?
+      runJavaScriptAlertDialog;
+
+  /// notifies the host application that the web page
+  /// wants to display a JavaScript confirm() dialog.
+  final Future<bool> Function(WKJavaScriptPanelData data)?
+      runJavaScriptConfirmDialog;
+
+  /// notifies the host application that the web page
+  /// wants to display a JavaScript prompt() dialog.
+  final Future<String> Function(WKJavaScriptPanelData data)?
+      runJavaScriptTextInputDialog;
+
   @override
   WKUIDelegate copy() {
     return WKUIDelegate.detached(
       onCreateWebView: onCreateWebView,
       requestMediaCapturePermission: requestMediaCapturePermission,
+      runJavaScriptAlertDialog: runJavaScriptAlertDialog,
+      runJavaScriptConfirmDialog: runJavaScriptConfirmDialog,
+      runJavaScriptTextInputDialog: runJavaScriptTextInputDialog,
       observeValue: observeValue,
       binaryMessenger: _uiDelegateApi.binaryMessenger,
       instanceManager: _uiDelegateApi.instanceManager,
